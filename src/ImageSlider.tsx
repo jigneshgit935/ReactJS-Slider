@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './ImageSlider.css';
-import { ArrowBigLeft, ArrowBigRight } from 'lucide-react';
+import { ArrowBigLeft, ArrowBigRight, CircleDot, Circle } from 'lucide-react';
 type ImageSliderProps = {
   imageUrls: string[];
 };
@@ -28,7 +28,24 @@ const ImageSlider = ({ imageUrls }: ImageSliderProps) => {
 
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-      <img src={imageUrls[imageIndex]} className="imageSliderImage" />
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          overflow: 'hidden',
+        }}
+      >
+        {imageUrls.map((url) => (
+          <img
+            key={url}
+            src={url}
+            className="imageSliderImage"
+            style={{ translate: `${-100 * imageIndex}%` }}
+          />
+        ))}
+      </div>
+
       <button
         onClick={showPrevImage}
         className="image-slider-btn"
@@ -43,6 +60,26 @@ const ImageSlider = ({ imageUrls }: ImageSliderProps) => {
       >
         <ArrowBigRight />
       </button>
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '.5rem',
+          left: '50%',
+          translate: '-50%',
+          display: 'flex',
+          gap: '.25rem',
+        }}
+      >
+        {imageUrls.map((_, index) => (
+          <button
+            key={index}
+            className="img-slider-dot-btn"
+            onClick={() => setImageIndex(index)}
+          >
+            {index === imageIndex ? <CircleDot /> : <Circle />}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
